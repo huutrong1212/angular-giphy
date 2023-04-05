@@ -1,0 +1,34 @@
+<form class="b-form">
+  <tui-input [formControl]="searchInputControl">
+    Search all the GIFs and Sticker
+    <input tuiTextfield />
+  </tui-input>
+</form>
+
+<tui-carousel
+  [draggable]="true"
+  [duration]="2000"
+  [itemsCount]="3"
+  [(index)]="index"
+>
+  <ng-container *ngFor="let item of giphy$ | async; let i = index">
+    <img
+      *tuiItem
+      alt=""
+      draggable="false"
+      [src]="item.images?.fixed_width.url"
+      class="item"
+      [class.item_active]="i === index + 1"
+      (click)="onOpen(item.id)"
+    />
+  </ng-container>
+</tui-carousel>
+
+
+<div class="grid grid-cols-3 gap-4">
+  <ng-container *ngFor="let item of giphy$ | async">
+    <div>
+        <img class="h-auto max-w-full rounded-lg" [src]="item.images?.fixed_width.url" alt="">
+    </div>
+  </ng-container>
+</div>
