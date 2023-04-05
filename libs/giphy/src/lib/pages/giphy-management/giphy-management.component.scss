@@ -1,3 +1,9 @@
 :host {
   display: block;
 }
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0;
+}

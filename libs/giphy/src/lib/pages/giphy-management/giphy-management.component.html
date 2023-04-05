@@ -5,30 +5,64 @@
   </tui-input>
 </form>
 
-<tui-carousel
-  [draggable]="true"
-  [duration]="2000"
-  [itemsCount]="3"
-  [(index)]="index"
->
-  <ng-container *ngFor="let item of giphy$ | async; let i = index">
-    <img
-      *tuiItem
-      alt=""
-      draggable="false"
-      [src]="item.images?.fixed_width.url"
-      class="item"
-      [class.item_active]="i === index + 1"
-      (click)="onOpen(item.id)"
-    />
-  </ng-container>
-</tui-carousel>
+<tui-loader [overlay]="true" [showLoader]="loading">
+  <section>
+    <p class="text-3xl font-semibold pt-4">GIFs</p>
+    <tui-carousel
+      [draggable]="true"
+      [duration]="2000"
+      [itemsCount]="3"
+      [(index)]="indexGif"
+    >
+      <ng-container *ngFor="let item of gifs$ | async; let i = index">
+        <img
+          *tuiItem
+          alt=""
+          draggable="false"
+          [src]="item.images.fixed_width.url"
+          [class.item_active]="i === indexGif + 1"
+          (click)="onOpenDialog(item.id)"
+          height="120px"
+        />
+      </ng-container>
+    </tui-carousel>
+  </section>
 
+  <section>
+    <p class="text-3xl font-semibold">Emoji</p>
+    <tui-carousel
+      [draggable]="true"
+      [duration]="2000"
+      [itemsCount]="3"
+      [(index)]="indexEmoji"
+    >
+      <ng-container *ngFor="let item of emoji$ | async; let i = index">
+        <img
+          *tuiItem
+          alt=""
+          draggable="false"
+          [src]="item.images.fixed_width.url"
+          [class.item_active]="i === indexEmoji + 1"
+          height="120px"
+        />
+      </ng-container>
+    </tui-carousel>
+  </section>
 
-<div class="grid grid-cols-3 gap-4">
-  <ng-container *ngFor="let item of giphy$ | async">
-    <div>
-        <img class="h-auto max-w-full rounded-lg" [src]="item.images?.fixed_width.url" alt="">
+  <section>
+    <p class="text-3xl font-semibold">GIFs</p>
+    <div class="container py-2">
+      <ng-container *ngFor="let item of gifs$ | async">
+        <div>
+          <img class="h-auto max-w-full rounded-lg" [src]="item.images.fixed_width.url" alt="" (click)="onOpenDialog(item.id)">
+        </div>
+      </ng-container>
     </div>
-  </ng-container>
-</div>
+  </section>
+</tui-loader>
+
+<tui-pagination
+  [length]="pagination.total_count"
+  [index]="limit"
+  (indexChange)="goToPage(pagination.offset = $event)"
+></tui-pagination>
